@@ -15,13 +15,14 @@ those are).
 
 After converting the texturepack, zip the contents of the output folder.
 Example using the zip command:
-`
+
+```
 cd output_folder
 
 zip ../texturepack.zip -r ./*
 
 cd -
-`
+```
 
 That's all, just place it in your minecraft texturepack folder, open the game and
 load the texturepack.
