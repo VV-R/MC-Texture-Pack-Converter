@@ -25,3 +25,7 @@ cd -
 
 That's all, just place it in your minecraft texturepack folder, open the game and
 load the texturepack.
+
+## License
+
+This program is released under AGPL-3.0-only.
