@@ -1,17 +1,24 @@
 import shutil
 import os
 
+from utils import COULD_NOT_FIND_MSG
+
 
 class FromTo:
     def __init__(self, dest: str, to: str):
         self.dest = dest
         self.to = to
 
-    def copy(self, source, destination):
-        shutil.copy(
-            os.path.join(source, self.dest),
-            os.path.join(destination, self.to)
-        )
+    def copy(self, source, destination, skip_missing=False):
+        try:
+            shutil.copy(
+                os.path.join(source, self.dest),
+                os.path.join(destination, self.to)
+            )
+        except FileNotFoundError:
+            if not skip_missing:
+                raise
+            print(COULD_NOT_FIND_MSG.format(self.dest))
 
 
 dirs = [
@@ -78,9 +85,9 @@ environment_files_copy_list = [
 ]
 
 
-def process_from_to_list(source, destination, collection):
+def process_from_to_list(source, destination, collection, skip_missing=False):
     for from_to in collection:
-        from_to.copy(source, destination)
+        from_to.copy(source, destination, skip_missing)
 
 
 def mk_dirs(destination):

@@ -26,6 +26,9 @@ from get_base import get_base
 argparser = ArgumentParser()
 argparser.add_argument('source', type=Path)
 argparser.add_argument('destination', type=Path)
+argparser.add_argument(
+    '-s', '--skip-missing', action='store_true', help='skip missing textures'
+)
 
 
 def do_paintings(
@@ -42,14 +45,14 @@ def main():
     args = argparser.parse_args()
     args.destination.mkdir(exist_ok=True)
     base = get_base(args.source)
-    terrain_builder = convert_blocks(args.source / 'assets/minecraft/textures/block')
-    items_builder = convert_items(args.source / 'assets/minecraft/textures/item', skip_missing=True)
+    terrain_builder = convert_blocks(args.source / 'assets/minecraft/textures/block', skip_missing=args.skip_missing)
+    items_builder = convert_items(args.source / 'assets/minecraft/textures/item', skip_missing=args.skip_missing)
     #convert_bed(terrain, args.source / 'assets/minecraft/textures/entity/bed')
     mk_dirs(args.destination)
-    process_from_to_list(args.source, args.destination, gui_files_copy_list)
-    process_from_to_list(args.source, args.destination, entity_files_copy_list)
-    process_from_to_list(args.source, args.destination, armor_files_copy_list)
-    process_from_to_list(args.source, args.destination, environment_files_copy_list)
+    process_from_to_list(args.source, args.destination, gui_files_copy_list, args.skip_missing)
+    process_from_to_list(args.source, args.destination, entity_files_copy_list, args.skip_missing)
+    process_from_to_list(args.source, args.destination, armor_files_copy_list, args.skip_missing)
+    process_from_to_list(args.source, args.destination, environment_files_copy_list, args.skip_missing)
     copy_water(
         args.source / 'assets/minecraft/textures/block/water_still.png',
         terrain_builder, base=base

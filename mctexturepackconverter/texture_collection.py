@@ -5,6 +5,7 @@ from PIL import Image
 
 from terrain import terrain
 from items import items
+from utils import COULD_NOT_FIND_MSG
 
 
 class TextureCollectionBuilder(ABC):
@@ -73,6 +74,7 @@ def _convert_texture_collection(
         except FileNotFoundError:
             if skip_missing:
                 print(f"Couldn't find {item}.png. Skipping...")
+                print(COULD_NOT_FIND_MSG.format(item))
             else:
                 raise
 
