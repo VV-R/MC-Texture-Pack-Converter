@@ -1,1 +1,1 @@
-COULD_NOT_FIND_MSG = "Couldn't find {}.png. Skipping..."
+COULD_NOT_FIND_MSG = "Couldn't find {}, skipping..."

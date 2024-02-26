@@ -73,8 +73,7 @@ def _convert_texture_collection(
                 builder.put(j, i, img)
         except FileNotFoundError:
             if skip_missing:
-                print(f"Couldn't find {item}.png. Skipping...")
-                print(COULD_NOT_FIND_MSG.format(item))
+                print(COULD_NOT_FIND_MSG.format(f'{item}.png'))
             else:
                 raise
 
