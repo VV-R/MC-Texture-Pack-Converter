@@ -1,4 +1,3 @@
-import functools
 from pathlib import Path
 
 from PIL import Image
@@ -11,7 +10,6 @@ class Position:
 
 
 class Painting:
-    @functools.singledispatchmethod
     def __init__(self, name: str, x: int, y: int):
         self.name = name
         self.position = Position(x, y)
