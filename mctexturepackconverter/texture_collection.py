@@ -51,16 +51,13 @@ class ItemsTextureBuilder(TextureCollectionBuilder):
 
 
 def _convert_texture_collection(
-    layout, texture_builder, source, skip_missing: bool = False
+    layout, texture_builder, source, base, skip_missing: bool = False
 ):
     it = filter(lambda x: x[2] != '', layout.iter_elements())
-    i, j, item = next(it)
 
-    with Image.open(source / (item + '.png')) as img:
-        builder = texture_builder.from_texture_info(
-            img.width, layout.width(), layout.height()
-        )
-        builder.put(j, i, img)
+    builder = texture_builder.from_texture_info(
+        base, layout.width(), layout.height()
+    )
 
     for i, j, item in it:
         try:
