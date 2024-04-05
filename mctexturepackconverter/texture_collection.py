@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import functools
+from pathlib import Path
 
 from PIL import Image
 
@@ -51,7 +52,7 @@ class ItemsTextureBuilder(TextureCollectionBuilder):
 
 
 def _convert_texture_collection(
-    layout, texture_builder, source, base, skip_missing: bool = False
+    layout, texture_builder, path, base, provider
 ):
     it = filter(lambda x: x[2] != '', layout.iter_elements())
 
@@ -59,28 +60,24 @@ def _convert_texture_collection(
         base, layout.width(), layout.height()
     )
 
-    for i, j, item in it:
-        try:
-            with Image.open(source / (item + '.png')) as img:
-                if img.height != builder.base:
-                    img = img.crop((0,0, builder.base, builder.base))
-                if img.width != builder.base:
-                    print(f'Skip {item}.png, because of deviating image size')
-                    continue
-                builder.put(j, i, img)
-        except FileNotFoundError:
-            if skip_missing:
-                print(COULD_NOT_FIND_MSG.format(f'{item}.png'))
-            else:
-                raise
+    def handle_img(i, j, img):
+        if img.height != builder.base:
+            img = img.crop((0, 0, base, base))
+        builder.put(j, i, img)
 
+    for i, j, item in it:
+        provider.do_with(
+            path / f'{item}.png', functools.partial(handle_img, i, j)
+        )
     return builder
 
 
 convert_blocks = functools.partial(
-    _convert_texture_collection, terrain, TerrainTextureBuilder
+    _convert_texture_collection, terrain,
+    TerrainTextureBuilder, Path('assets/minecraft/textures/block')
 )
 
 convert_items = functools.partial(
-    _convert_texture_collection, items, ItemsTextureBuilder
+    _convert_texture_collection, items,
+    ItemsTextureBuilder, Path('assets/minecraft/textures/item')
 )

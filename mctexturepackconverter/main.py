@@ -21,6 +21,7 @@ from copy_files import (
     entity_files_copy_list, armor_files_copy_list, environment_files_copy_list
 )
 from get_base import get_base
+from image_provider import ImageProvider, SkippingImageProvider
 
 
 argparser = ArgumentParser()
@@ -45,9 +46,15 @@ def main():
     args = argparser.parse_args()
     args.destination.mkdir(exist_ok=True)
     base = get_base(args.source)
-    terrain_builder = convert_blocks(args.source / 'assets/minecraft/textures/block', skip_missing=args.skip_missing)
-    items_builder = convert_items(args.source / 'assets/minecraft/textures/item', skip_missing=args.skip_missing)
     #convert_bed(terrain, args.source / 'assets/minecraft/textures/entity/bed')
+
+    if args.skip_missing:
+        provider = SkippingImageProvider(args.source)
+    else:
+        provider = ImageProvider(args.source)
+
+    terrain_builder = convert_blocks(base, provider)
+    items_builder = convert_items(base, provider)
     mk_dirs(args.destination)
     process_from_to_list(args.source, args.destination, gui_files_copy_list, args.skip_missing)
     process_from_to_list(args.source, args.destination, entity_files_copy_list, args.skip_missing)
