@@ -7,6 +7,8 @@ from PIL import Image
 from terrain import terrain
 from items import items
 from utils import COULD_NOT_FIND_MSG
+from pipeline import Context
+from pipeline.middleware.callback_middleware import CallbackMiddleware
 
 
 class TextureCollectionBuilder(ABC):
@@ -51,33 +53,20 @@ class ItemsTextureBuilder(TextureCollectionBuilder):
         )
 
 
-def _convert_texture_collection(
-    layout, texture_builder, path, base, provider
-):
+def convert_texture_collection(layout, builder, base, pipeline):
     it = filter(lambda x: x[2] != '', layout.iter_elements())
 
-    builder = texture_builder.from_texture_info(
-        base, layout.width(), layout.height()
-    )
+    def handle_img(context, img):
+        if img is None:
+            return
 
-    def handle_img(i, j, img):
         if img.height != builder.base:
             img = img.crop((0, 0, base, base))
-        builder.put(j, i, img)
+        builder.put(context.j, context.i, img)
+        img.close()
+
+    pipeline.add(CallbackMiddleware(handle_img))
 
     for i, j, item in it:
-        provider.do_with(
-            path / f'{item}.png', functools.partial(handle_img, i, j)
-        )
+        img = pipeline.next(Context(item, i, j, base, base))
     return builder
-
-
-convert_blocks = functools.partial(
-    _convert_texture_collection, terrain,
-    TerrainTextureBuilder, Path('assets/minecraft/textures/block')
-)
-
-convert_items = functools.partial(
-    _convert_texture_collection, items,
-    ItemsTextureBuilder, Path('assets/minecraft/textures/item')
-)

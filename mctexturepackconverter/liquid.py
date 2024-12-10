@@ -4,21 +4,20 @@ import functools
 from PIL import Image
 
 
-def _copy_liquid(x_cords, y_cords, source, terrain, base):
-    with Image.open(source) as img:
-        for i, x, y in zip(
-            itertools.count(),
-            x_cords,
-            y_cords
-        ):
-            cropped = img.crop((
-                0, i * base,
-                base, (i + 1) * base
-            ))
-            terrain.put(
-                x, y,
-                cropped
-            )
+def _copy_liquid(x_cords, y_cords, img, terrain, base):
+    for i, x, y in zip(
+        itertools.count(),
+        x_cords,
+        y_cords
+    ):
+        cropped = img.crop((
+            0, i * base,
+            base, (i + 1) * base
+        ))
+        terrain.put(
+            x, y,
+            cropped
+        )
 
 copy_water = functools.partial(
     _copy_liquid,
