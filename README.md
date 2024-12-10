@@ -15,7 +15,7 @@ those are).
 
 It is also possible to make the program fall back on another resource pack if
 the first one does not have the texture:
-`python mctexturepackconverter {path to resource pack} {path to second resource pack} {path to output directory}`
+`python mctexturepackconverter {path to resource pack} {path to second resource pack} {path to output directory}`.
 You can chain as many resource packs as you like.
 Note that chaining does not work for entities and gui textures (yet).
 
