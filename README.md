@@ -13,6 +13,15 @@ those are).
 
 `python mctexturepackconverter {path to resource pack (must be unzipped)} {path to output directory}`
 
+It is also possible to make the program fall back on another resource pack if
+the first one does not have the texture:
+`python mctexturepackconverter {path to resource pack} {path to second resource pack} {path to output directory}`
+You can chain as many resource packs as you like.
+Note that chaining does not work for entities and gui textures (yet).
+
+You can use the -s flag to make the program skip missing textures instead of
+raising an exception.
+
 After converting the texturepack, zip the contents of the output folder.
 Example using the zip command:
 
