@@ -38,6 +38,14 @@ argparser.add_argument('destination', type=Path)
 argparser.add_argument(
     '-s', '--skip-missing', action='store_true', help='skip missing textures'
 )
+argparser.add_argument(
+    '--bed-color', help='select bed color', default='red', choices=[
+        'black', 'blue', 'brown', 'cyan', 'gray', 'green', 'light_blue',
+        'light_gray', 'lime', 'magenta', 'orange', 'pink', 'purple', 'red',
+        'white', 'yellow'
+    ]
+)
+
 def get_terrain_texture_builder(base: int) -> TerrainTextureBuilder:
     return TerrainTextureBuilder.from_texture_info(
         base, terrain.width(), terrain.height()
@@ -115,7 +123,7 @@ def main():
 
     terrain_builder = get_terrain_texture_builder(base)
 
-    bed_texture = pipeline_bed.next(Context('red', 0, 0, base, base));
+    bed_texture = pipeline_bed.next(Context(args.bed_color, 0, 0, base, base));
     convert_bed(terrain_builder, bed_texture)
 
     water = pipeline_block.next(Context('water_still', 0, 0, base, base))
