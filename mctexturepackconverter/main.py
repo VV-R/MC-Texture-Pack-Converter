@@ -29,6 +29,7 @@ from pipeline.pipelines import substitution_pipeline
 from pipeline import Context
 from pipeline.middleware.callback_middleware import CallbackMiddleware
 from pipeline.middleware.raise_middleware import RaiseMiddleware
+from bed import convert_bed
 
 
 argparser = ArgumentParser()
@@ -86,7 +87,6 @@ def handle_sources(sources: list[Path]) -> list[tuple[Path, int]]:
 def main():
     args = argparser.parse_args()
     args.destination.mkdir(exist_ok=True)
-    #convert_bed(terrain, args.source / 'assets/minecraft/textures/entity/bed')
 
     sources = handle_sources(args.sources)
 
@@ -101,14 +101,22 @@ def main():
         sources, "assets/minecraft/textures/item/"
     ))
 
+    pipeline_bed = substitution_pipeline.factory(*join_path_to_sources(
+        sources, 'assets/minecraft/textures/entity/bed'
+    ))
+
     if not args.skip_missing:
         raise_middleware = RaiseMiddleware(
             lambda c: Exception(f'Could not find texture {c.kind}')
         )
         pipeline_block.add(raise_middleware)
         pipeline_item.add(raise_middleware)
+        pipeline_bed.add(raise_middleware)
 
     terrain_builder = get_terrain_texture_builder(base)
+
+    bed_texture = pipeline_bed.next(Context('red', 0, 0, base, base));
+    convert_bed(terrain_builder, bed_texture)
 
     water = pipeline_block.next(Context('water_still', 0, 0, base, base))
     if water:
