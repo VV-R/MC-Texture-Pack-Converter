@@ -5,7 +5,7 @@
 #   unknown_pack.png
 #   Fix pig nose texture
 #   Finish bed support.
-#   Fix invisible door and chest.
+#   Fix invisible chest.
 
 from argparse import ArgumentParser
 from pathlib import Path
