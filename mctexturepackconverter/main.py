@@ -1,5 +1,9 @@
 # Todo:
-#   logo.png
+#   logo.png - This one seems not to be used, but mclogo.png is???
+#   mclogo.png / minecraft.png
+#       minecraft.png seems to be the mclogo.png for resourcepacks, but the
+#       dimensions vary accross versions. For example mc 1.20.4 is different from
+#       1.17.1. Also some seem to contain a Realms logo and some not.
 #   particles.png
 #   slot.png
 #   Fix pig nose texture
