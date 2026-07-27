@@ -30,6 +30,7 @@ from pipeline import Context
 from pipeline.middleware.callback_middleware import CallbackMiddleware
 from pipeline.middleware.raise_middleware import RaiseMiddleware
 from bed import convert_bed
+from chest import convert_chest
 
 
 argparser = ArgumentParser()
@@ -113,6 +114,10 @@ def main():
         sources, 'assets/minecraft/textures/entity/bed'
     ))
 
+    pipeline_chest = substitution_pipeline.factory(*join_path_to_sources(
+        sources, 'assets/minecraft/textures/entity/chest'
+    ))
+
     if not args.skip_missing:
         raise_middleware = RaiseMiddleware(
             lambda c: Exception(f'Could not find texture {c.kind}')
@@ -120,8 +125,12 @@ def main():
         pipeline_block.add(raise_middleware)
         pipeline_item.add(raise_middleware)
         pipeline_bed.add(raise_middleware)
+        pipeline_chest.add(raise_middleware)
 
     terrain_builder = get_terrain_texture_builder(base)
+
+    chest_texture = pipeline_chest.next(Context("normal", 0, 0, base, base))
+    convert_chest(terrain_builder, chest_texture)
 
     bed_texture = pipeline_bed.next(Context(args.bed_color, 0, 0, base, base));
     convert_bed(terrain_builder, bed_texture)
