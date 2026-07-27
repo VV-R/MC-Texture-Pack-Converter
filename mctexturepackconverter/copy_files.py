@@ -38,7 +38,8 @@ gui_files_copy_list = [
     FromTo('assets/minecraft/textures/gui/container/inventory.png', 'gui/inventory.png'),
     FromTo('assets/minecraft/textures/gui/container/dispenser.png', 'gui/trap.png'),
     FromTo('assets/minecraft/textures/gui/icons.png', 'gui/icons.png'),
-    FromTo('assets/minecraft/textures/misc/unknown_pack.png', 'gui/unknown_pack.png')
+    FromTo('assets/minecraft/textures/misc/unknown_pack.png', 'gui/unknown_pack.png'),
+    FromTo('pack.png', 'pack.png')
 ]
 
 
