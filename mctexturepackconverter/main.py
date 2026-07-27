@@ -4,8 +4,7 @@
 #   slot.png
 #   unknown_pack.png
 #   Fix pig nose texture
-#   Finish bed support.
-#   Fix invisible chest.
+#   Add legs to bed
 
 from argparse import ArgumentParser
 from pathlib import Path
