@@ -16,10 +16,13 @@ def convert_bed(builder, img):
 
     spacing = builder.scale(22)
     back = builder.blank_item()
-    back.paste(img.crop((
-        spacing, spacing, spacing + builder.base,
-        spacing + thickness
-    )), (0, builder.scale(7)))
+    back.paste(
+        img.crop((
+            spacing, spacing, spacing + builder.base,
+            spacing + thickness
+        )).transpose(method=Image.Transpose.ROTATE_180),
+        (0, builder.scale(7))
+    )
 
     front = builder.blank_item()
 
