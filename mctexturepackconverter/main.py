@@ -2,7 +2,6 @@
 #   logo.png
 #   particles.png
 #   slot.png
-#   unknown_pack.png
 #   Fix pig nose texture
 #   Add legs to bed
 
