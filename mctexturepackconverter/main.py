@@ -130,7 +130,9 @@ def main():
     terrain_builder = get_terrain_texture_builder(base)
 
     chest_texture = pipeline_chest.next(Context("normal", 0, 0, base, base))
-    convert_chest(terrain_builder, chest_texture)
+    chest_texture_left = pipeline_chest.next(Context("normal_left", 0, 0, base, base))
+    chest_texture_right = pipeline_chest.next(Context("normal_right", 0, 0, base, base))
+    convert_chest(terrain_builder, chest_texture, chest_texture_left, chest_texture_right)
 
     bed_texture = pipeline_bed.next(Context(args.bed_color, 0, 0, base, base));
     convert_bed(terrain_builder, bed_texture)

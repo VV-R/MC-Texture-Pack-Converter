@@ -37,9 +37,39 @@ def build_top(img, alt_base: int, builder: TerrainTextureBuilder) -> None:
     top.paste(top_body, (builder.base // 16, builder.base // 16))
     builder.put(9, 1, top)
 
-def convert_chest(builder: TerrainTextureBuilder, img) -> None:
+def build_front_double(
+    img,
+    alt_base: int,
+    builder: TerrainTextureBuilder,
+    offset_x: int,
+) -> None:
+    front_left = Image.new('RGB', (builder.base, builder.base))
+
+    front_left_body = img.crop((alt_base // 14 * 43, alt_base // 14 * 33, alt_base // 14 * 58, alt_base // 14 * 43))
+    front_left_body = front_left_body.rotate(180)
+    front_left.paste(front_left_body, (offset_x, builder.base // 16 * 5))
+
+    front_left_lid = img.crop((
+        alt_base // 14 * 43, alt_base,
+        alt_base // 14 * 58, alt_base // 14 * 19
+    )).rotate(180)
+    front_left.paste(front_left_lid, (offset_x, builder.base // 16))
+    return front_left
+
+def build_front_left(img, alt_base: int, builder: TerrainTextureBuilder) -> None:
+    side = build_front_double(img, alt_base, builder, 0)
+    builder.put(10, 2, side)
+
+
+def build_front_right(img, alt_base: int, builder: TerrainTextureBuilder) -> None:
+    side = build_front_double(img, alt_base, builder, builder.base // 16)
+    builder.put(9, 2, side)
+
+def convert_chest(builder: TerrainTextureBuilder, img, left, right) -> None:
     # a chest texture is 7/8 the dimensions of a regular block
     alt_base = builder.base // 8 * 7
     build_front(img, alt_base, builder)
     build_back(img, alt_base, builder)
     build_top(img, alt_base, builder)
+    build_front_left(left, alt_base, builder)
+    build_front_right(right, alt_base, builder)
