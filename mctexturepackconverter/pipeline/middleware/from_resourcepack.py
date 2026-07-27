@@ -21,6 +21,11 @@ class FromResourcepack(AbstractMiddleware):
         except FileNotFoundError:
             pass
         try:
+            '''
+            Some resourcepacks have certain textures grouped in folders and
+            others don't. For example "oak_leaves.png" vs
+            "leaves/oak_leaves.png". This code block handles such possibilities.
+            '''
             split = context.kind.split('/')
             if len(split) > 1:
                 return Image.open(self._path / f'{split[-1]}.png')
