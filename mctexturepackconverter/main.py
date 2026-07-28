@@ -7,7 +7,6 @@
 #   particles.png
 #   slot.png
 #   Fix pig nose texture
-#   Add legs to bed
 
 from argparse import ArgumentParser
 from pathlib import Path

@@ -50,6 +50,61 @@ def convert_bed(builder, img):
         (0, builder.scale(7))
     )
 
+    # copy and paste bed leg textures
+    # Left leg on front side
+    front.paste(
+        img.crop((
+            builder.scale(53), builder.scale(21),
+            builder.scale(56), builder.scale(24)
+        )),
+        (builder.scale(0), builder.scale(13))
+    )
+
+    # Right leg on front side
+    front.paste(
+        img.crop((
+            builder.scale(50), builder.scale(9),
+            builder.scale(53), builder.scale(12)
+        )),
+        (builder.scale(13), builder.scale(13))
+    )
+
+    # Left leg on back side
+    back.paste(
+        img.crop((
+            builder.scale(53), builder.scale(3),
+            builder.scale(56), builder.scale(6)
+        )),
+        (builder.scale(0), builder.scale(13))
+    )
+
+    # Right leg on back side
+    back.paste(
+        img.crop((
+            builder.scale(50), builder.scale(15),
+            builder.scale(53), builder.scale(18)
+        )),
+        (builder.scale(13), builder.scale(13))
+    )
+
+    # Right leg on left and right side
+    side_head.paste(
+        img.crop((
+            builder.scale(50), builder.scale(21),
+            builder.scale(53), builder.scale(24)
+        )),
+        (builder.scale(13), builder.scale(13))
+    )
+
+    # Left leg on left and right side
+    side_lower.paste(
+        img.crop((
+            builder.scale(53), builder.scale(15),
+            builder.scale(56), builder.scale(18)
+        )),
+        (builder.scale(0), builder.scale(13))
+    )
+
     for x, y, part in (
         (6, 8, top_lower),
         (7, 8, top_head),
