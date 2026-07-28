@@ -50,7 +50,7 @@ entity_files_copy_list = [
     FromTo('assets/minecraft/textures/entity/creeper/creeper.png', 'mob/creeper.png'),
     FromTo('assets/minecraft/textures/entity/ghast/ghast.png', 'mob/ghast.png'),
     FromTo('assets/minecraft/textures/entity/ghast/ghast_shooting.png', 'mob/ghast_fire.png'),
-    FromTo('assets/minecraft/textures/entity/pig/pig.png', 'mob/pig.png'),
+    # pig needs some extra processing
     FromTo('assets/minecraft/textures/entity/piglin/zombified_piglin.png', 'mob/pigzombie.png'),
     FromTo('assets/minecraft/textures/entity/pig/pig_saddle.png', 'mob/saddle.png'),
     FromTo('assets/minecraft/textures/entity/sheep/sheep_fur.png', 'mob/sheep_fur.png'),

@@ -6,12 +6,12 @@
 #       1.17.1. Also some seem to contain a Realms logo and some not.
 #   particles.png
 #   slot.png
-#   Fix pig nose texture
 
 from argparse import ArgumentParser
 from pathlib import Path
 import functools
 from typing import Iterator
+import contextlib
 
 from PIL import Image
 
@@ -23,7 +23,9 @@ from copy_files import (
     entity_files_copy_list, armor_files_copy_list, environment_files_copy_list
 )
 from get_base import get_base
-from texture_collection import TerrainTextureBuilder, ItemsTextureBuilder
+from texture_collection import (
+    TerrainTextureBuilder, ItemsTextureBuilder, TextureCollectionBuilder
+)
 from items import items
 from terrain import terrain
 from pipeline.pipelines import substitution_pipeline
@@ -32,6 +34,7 @@ from pipeline.middleware.callback_middleware import CallbackMiddleware
 from pipeline.middleware.raise_middleware import RaiseMiddleware
 from bed import convert_bed
 from chest import convert_chest
+from pig import convert_pig
 
 
 argparser = ArgumentParser()
@@ -85,6 +88,23 @@ def do_paintings(
     finally:
         back_texture.close()
     return image
+
+
+def do_pig(
+    base: int,
+    builder: TextureCollectionBuilder,
+    sources: list[tuple[Path, int]],
+    destination: Path,
+    skip_missing: bool
+) -> None:
+    texture_path = 'assets/minecraft/textures/entity/pig/pig.png'
+    with (
+        contextlib.suppress(FileNotFoundError)
+        if skip_missing
+        else contextlib.nullcontext(),
+        Image.open(sources[0][0] / texture_path) as img
+    ):
+       convert_pig(builder, img).save(destination / 'mob/pig.png')
 
 
 def handle_sources(sources: list[Path]) -> list[tuple[Path, int]]:
@@ -167,6 +187,8 @@ def main():
 
     paintings = do_paintings(base, sources)
     paintings.save(args.destination / 'art/kz.png')
+
+    do_pig(base, terrain_builder, sources, args.destination, args.skip_missing)
 
 if __name__ == '__main__':
     main()
